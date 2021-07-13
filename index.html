@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snek Game</title>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+    <script>
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext("2d")
+        let width = canvas.width
+        let height = canvas.height
+
+        // block grid variables
+        const blockSize = 10
+        const widthInBlocks = width / blockSize
+        const heightInBlocks = height / blockSize
+
+        // score variable
+        let score = 0
+
+        // draw border func
+        function drawBorder() {
+            ctx.fillStyle = "Gray"
+            ctx.fillRect(0, 0, width, blockSize)
+            ctx.fillRect(0, height - blockSize, width, blockSize);
+            ctx.fillRect(0, 0, blockSize, height)
+            ctx.fillRect(width - blockSize, 0, blockSize, height)
+        }
+
+        // draw score func
+        function drawScore() {
+            ctx.font = "20px Courier"
+            ctx.fillStyle = "Black"
+            ctx.textAlign = "left"
+            ctx.textBaseline = "top"
+            ctx.fillText("Score: " + score, blockSize + 5, blockSize + 5)
+        }
+
+        // game over
+        function gameOver() {
+            //clearInterval(intervalId)
+            ctx.font = "60px Courier"
+            ctx.fillStyle = "Black"
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.fillText("Game over", width / 2, height / 2)
+        }
+
+        // animation function
+        const intervalId = setInterval(function() {
+            ctx.clearRect(0, 0, width, height)
+            drawBorder()
+            drawScore()
+            //snake.move()
+            //snake.draw()
+            //apple.draw()
+
+            for (i = score; score < 1000; i++) {
+                score += 1
+                console.log(score)
+            }
+        }, 100)
+    </script>
+</body>
+</html>
