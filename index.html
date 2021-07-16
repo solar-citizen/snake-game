@@ -48,7 +48,8 @@
 
             // game over
             function gameOver() {
-                clearInterval(intervalId)
+                //clearInterval(intervalId)
+                gameContinues = false
                 ctx.font = "60px Courier"
                 ctx.fillStyle = "Black"
                 ctx.textAlign = "center"
@@ -143,13 +144,14 @@
 
                 if (this.checkCollision(newHead)) {
                     gameOver()
-                    return
                 }
 
                 this.segments.unshift(newHead)
 
                 if (newHead.equal(apple.position)) {
                     score++
+                    animationTime--
+                    console.log(animationTime)
                     apple.move()
                 } else {
                     this.segments.pop()
@@ -211,19 +213,30 @@
                 this.position = new Block(randomCol, randomRow)
             }
 
+            // setting up animation speed
+            let animationTime = 100
+            // setting game state (until gameOver())
+            let gameContinues = true
             // creating default snake and apple
             let snake = new Snake()
             let apple = new Apple()
 
-            // animation function
-            const intervalId = setInterval(function() {
+            // animation function/game cycle
+            function gameLoop() {
                 ctx.clearRect(0, 0, width, height)
                 drawScore()
                 snake.move()
                 snake.draw()
                 apple.draw()
                 drawBorder()
-            }, 100)
+
+                if (gameContinues) {
+                    setTimeout(gameLoop, animationTime)
+                }
+            }
+
+            // starting game cycle
+            gameLoop()
 
             // object for translating key codes into key names(arrows)
             let directions = {
