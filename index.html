@@ -144,6 +144,7 @@
 
                 if (this.checkCollision(newHead)) {
                     gameOver()
+                    return
                 }
 
                 this.segments.unshift(newHead)
@@ -152,7 +153,7 @@
                     score++
                     animationTime--
                     console.log(animationTime)
-                    apple.move()
+                    apple.move(this.segments)
                 } else {
                     this.segments.pop()
                 }
@@ -206,11 +207,24 @@
             }
 
             // method to move apple
-            Apple.prototype.move = function() {
+            Apple.prototype.move = function(occupiedBlocks) {
                 let randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1
                 let randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1
                 
                 this.position = new Block(randomCol, randomRow)
+
+                // check if we moved the apple to the cell 
+                // currently occupied by the snake's body
+                let index = occupiedBlocks.length - 1
+                while (index >= 0) {
+                    if (this.position.equal(occupiedBlocks[index])) {
+                        // call apple.move() again if
+                        // apple is on occupied cell
+                        this.move(occupiedBlocks)
+                        return   
+                    }
+                    index--                               
+                }
             }
 
             // setting up animation speed
